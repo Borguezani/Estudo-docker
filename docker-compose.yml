@@ -1,0 +1,32 @@
+services:
+    backend:
+        container_name: backend
+        build:
+            context: /backend
+            dockerfile: DockerFile
+        environment:
+            - .env
+        ports:
+            - "8000:80"
+        tty: true
+        volumes:
+            - ./:/app
+            - /app/vendor
+            - /app/node_modules
+        networks:
+            - backend
+        command: "/bin/sh /app/scripts/entrypoint.sh"
+    db:
+        image: postgres:latest
+        container_name: postgres-container
+        environment:
+            - POSTGRES_USER=user
+            - POSTGRES_PASSWORD=my-secret-pw
+            - POSTGRES_DB=laravel
+        ports:
+            - "5432:5432"
+        networks:
+            - backend
+networks:
+    backend:
+        name: backend
