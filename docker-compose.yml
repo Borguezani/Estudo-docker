@@ -5,16 +5,14 @@ services:
     container_name: backend
     build:
       context: ./backend
-      dockerfile: DockerFile
-    environment:
-      - .env
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
     ports:
       - "8000:80"
     tty: true
     volumes:
       - ./backend:/app
-      - /app/vendor
-      - /app/node_modules
     networks:
       - backend
     command: "/bin/sh /app/scripts/entrypoint.sh"
