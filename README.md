@@ -44,6 +44,8 @@ docker-compose up -d --build
 ```bash
 # Instale as dependencias
 docker-compose exec backend composer install
+# Evitar erros do IntelliSense
+docker cp backend:/app/vendor ./backend/vendor
 # Gere a chave de criptografia do Laravel
 docker-compose exec backend php artisan key:generate
 ```
