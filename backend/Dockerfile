@@ -55,5 +55,28 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 WORKDIR /app
 COPY . .
 
+# Criando diretórios necessários e definindo permissões
+RUN mkdir -p /app/bootstrap/cache \
+    && mkdir -p /app/storage/logs \
+    && mkdir -p /app/storage/framework/cache \
+    && mkdir -p /app/storage/framework/sessions \
+    && mkdir -p /app/storage/framework/views \
+    && chmod -R 775 /app/storage \
+    && chmod -R 775 /app/bootstrap/cache
+
+# Instalando dependências do Composer
+RUN composer install --no-dev --optimize-autoloader
+
+# Criando o arquivo .env apenas se não existir (fallback para .env.example)
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
+# Gerando a chave da aplicação Laravel apenas se APP_KEY estiver vazio
+RUN if ! grep -q "APP_KEY=base64:" .env; then php artisan key:generate; fi
+
+# Definindo permissões adequadas
+RUN chown -R www-data:www-data /app \
+    && chmod -R 755 /app/storage \
+    && chmod -R 755 /app/bootstrap/cache
+
 # Expondo a porta 80 (se necessário)
 EXPOSE 80

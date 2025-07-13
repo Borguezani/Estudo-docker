@@ -1,0 +1,17 @@
+vendor/
+node_modules/
+.env.*
+!.env.example
+!.env
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/testing/
+storage/framework/views/
+bootstrap/cache/
+.git/
+.gitignore
+README.md
+CHANGELOG.md
+tests/
+phpunit.xml
