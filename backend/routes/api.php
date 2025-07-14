@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\ApiRest\PublicRoutes\Login;
-use App\Http\ApiRest\PrivateRoutes\ExampleController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,46 +20,55 @@ Route::get('/test', function () {
     return response()->json(['message' => 'API funcionando!', 'timestamp' => now()]);
 });
 
-// Rota para obter CSRF token (necessário para SPA)
-Route::get('/csrf-token', function () {
-    return response()->json(['csrf_token' => csrf_token()]);
+// Rota de teste POST (precisa de CSRF token)
+Route::post('/test', function (Request $request) {
+    return response()->json([
+        'message' => 'POST funcionando!',
+        'data' => $request->all(),
+        'timestamp' => now()
+    ]);
 });
+
+// Rota para gerar token CSRF
+// Route::get('sanctum/csrf-cookie', function () {
+//     return response()->json(['csrf_token' => csrf_token()]);
+// });
 
 // ===== ROTAS PÚBLICAS DE AUTENTICAÇÃO =====
 Route::prefix('auth')->group(function () {
     // Login
-    Route::post('/login', [Login::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login']);
     
     // Registro
-    Route::post('/register', [Login::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register']);
     
     // Rotas protegidas de autenticação
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:api')->group(function () {
         // Logout
-        Route::post('/logout', [Login::class, 'logout']);
+        Route::post('/logout', [AuthController::class, 'logout']);
         
-        // Logout de todos os dispositivos
-        Route::post('/logout-all', [Login::class, 'logoutAll']);
+        // Refresh token
+        Route::post('/refresh', [AuthController::class, 'refresh']);
         
         // Dados do usuário autenticado
-        Route::get('/me', [Login::class, 'me']);
+        Route::get('/me', [AuthController::class, 'me']);
     });
 });
 
 // ===== ROTAS PROTEGIDAS =====
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:api')->group(function () {
     // Rota de exemplo protegida
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
     
     Route::get('/protected', function () {
-        return response()->json(['message' => 'Esta rota está protegida por Sanctum!']);
+        return response()->json(['message' => 'Esta rota está protegida por JWT!']);
     });
     
     // Aqui você pode adicionar suas rotas protegidas que usarão o trait Validacao
     // Exemplo usando o ExampleController:
-    Route::apiResource('examples', ExampleController::class);
+
     
     // Ou rotas individuais:
     // Route::get('/examples', [ExampleController::class, 'index']);
