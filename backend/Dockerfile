@@ -53,8 +53,8 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && composer self-update 2.6.6
 
 # Diretório de trabalho e cópia do código-fonte
-RUN mkdir /opt/tech-pines
-WORKDIR /opt/tech-pines
+RUN mkdir /app
+WORKDIR /app
 COPY . .
 
 # Expondo a porta 80 (se necessário)

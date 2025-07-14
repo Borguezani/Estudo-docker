@@ -10,12 +10,10 @@ services:
       - "8000:80"
     tty: true
     volumes:
-      - ./:/app/teste
-      - /app/teste/vendor
-      - /app/teste/node_modules
+      - ./backend:/app
     networks:
       - backend
-    command: "/bin/sh /app/teste/backend/scripts/entrypoint.sh"
+    command: "/bin/sh /app/scripts/entrypoint.sh"
     depends_on:
       - db
 
