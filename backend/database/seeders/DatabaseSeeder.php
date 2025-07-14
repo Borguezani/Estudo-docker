@@ -12,26 +12,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Criar usuário de teste se não existir
-        \App\Models\User::firstOrCreate(
-            ['email' => 'test@example.com'],
-            [
-                'name' => 'Usuário Teste',
-                'email' => 'test@example.com',
-                'password' => \Illuminate\Support\Facades\Hash::make('password'),
-                'email_verified_at' => now(),
-            ]
-        );
-        
-        // Criar usuário admin se não existir
-        \App\Models\User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Administrador',
-                'email' => 'admin@example.com',
-                'password' => \Illuminate\Support\Facades\Hash::make('admin123'),
-                'email_verified_at' => now(),
-            ]
-        );
+        // \App\Models\User::factory(10)->create();
+
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }

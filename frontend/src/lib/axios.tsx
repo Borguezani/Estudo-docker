@@ -3,7 +3,7 @@ import axios from 'axios';
 // Para aplicações React que rodam no navegador, sempre usar localhost
 // porque o navegador não tem acesso à rede interna do Docker
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000',
   withCredentials: true,
 });
 

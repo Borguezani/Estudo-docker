@@ -19,22 +19,17 @@ const Login: React.FC = () => {
         try {
             // Fazer a requisição de teste
 
-            const tokenResponse = await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
-                withCredentials: true, // Necessário para enviar cookies CSRF
-            });
+       
             // const response = await axios.post('http://localhost:8000/api/test', {
             //     test: 'data'
             // }, {
             //     withCredentials: true,
             // });
             // Fazer a requisição de login
-            const response = await axios.post('http://localhost:8000/api/auth/login', {
+            const response = await axiosInstance.post('/api/auth/login', {
                 email,
                 password
             },
-            {
-                withCredentials: true, // Necessário para enviar cookies CSRF
-            }
         );
 
             if (response.data.success && response.data.data.token) {

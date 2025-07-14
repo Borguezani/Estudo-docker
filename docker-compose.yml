@@ -7,13 +7,15 @@ services:
     ports:
       - "8000:80"
     tty: true
+    environment:
+      - DB_USERNAME=user
+      - DB_PASSWORD=my-secret-pw
     volumes:
       - ./backend/app:/app/app
       - ./backend/config:/app/config
       - ./backend/database:/app/database
       - ./backend/resources:/app/resources
       - ./backend/routes:/app/routes
-      - ./backend/.env:/app/.env
     networks:
       - backend
     command: "/bin/sh /app/scripts/entrypoint.sh"
