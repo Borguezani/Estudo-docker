@@ -21,8 +21,8 @@ services:
     image: postgres:latest  
     container_name: postgres-container
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: my-secret-pw
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
       POSTGRES_DB: laravel
     ports:
       - "5432:5432"
