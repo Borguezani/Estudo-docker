@@ -21,6 +21,11 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'avatar',
+        'bio',
+        'birth_date',
+        'favorite_genre',
+        'is_public_profile',
     ];
 
     /**
@@ -42,7 +47,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'birth_date' => 'date',
+            'is_public_profile' => 'boolean',
         ];
     }
 
@@ -64,5 +70,29 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Get the movie lists for the user.
+     */
+    public function movieLists()
+    {
+        return $this->hasMany(MovieList::class);
+    }
+
+    /**
+     * Get the public movie lists for the user.
+     */
+    public function publicMovieLists()
+    {
+        return $this->hasMany(MovieList::class)->where('is_public', true);
+    }
+
+    /**
+     * Get the user's avatar URL or default.
+     */
+    public function getAvatarUrlAttribute()
+    {
+        return $this->avatar ? asset('storage/avatars/' . $this->avatar) : asset('images/default-avatar.png');
     }
 }
