@@ -44,6 +44,12 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+         $credentials = $request->only('email', 'password');
+
+        if (!$token = auth('api')->attempt($credentials)) {
+            return response()->json(['error' => 'Sem autorização'], 401);
+        }
+
         return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
     }
 
@@ -58,7 +64,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (!$token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Sem autorização'], 401);
         }
 
         return $this->respondWithToken($token);
@@ -106,7 +112,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => config('jwt.ttl') * 60
+            'expires_in' => config('jwt.ttl') * 60,
         ]);
     }
 }
