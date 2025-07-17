@@ -1,10 +1,17 @@
 
 import React from 'react';
 import { useAuth } from '../contexts/AuthorizationContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const { getUserData, logout, token } = useAuth();
+  const navigate = useNavigate();
   const userData = getUserData();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <div style={{ maxWidth: '600px', margin: '50px auto', padding: '20px' }}>
@@ -26,7 +33,7 @@ export default function Home() {
           marginBottom: '20px'
         }}>
           <h3>Dados do usuário:</h3>
-          <p><strong>Nome:</strong> {userData.nome}</p>
+          <p><strong>Nome:</strong> {userData.name}</p>
           <p><strong>Email:</strong> {userData.email}</p>
         </div>
       )}
@@ -44,7 +51,7 @@ export default function Home() {
       </div>
 
       <button
-        onClick={logout}
+        onClick={handleLogout}
         style={{
           padding: '10px 20px',
           backgroundColor: '#dc3545',

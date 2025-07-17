@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { AuthContext, AuthProvider, useIsAuthenticated } from './contexts/AuthorizationContext';
+import { AuthProvider } from './contexts/AuthorizationContext';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import protectedRoutes from './routes/protectedRoutes';
 import publicRoutes from './routes/publicRoutes';
@@ -28,15 +27,16 @@ palette: {
 }
 });
 
+// Criar o router uma única vez
+const router = createBrowserRouter([
+  // Rotas públicas
+  ...publicRoutes(),
+  // Rotas protegidas
+  ...protectedRoutes(),
+]);
+
 // Componente interno que usa o contexto
 function AppRouter() {
-  const { isAuth } = useContext(AuthContext);
-
-  const router = createBrowserRouter([
-    ...(isAuth ? protectedRoutes() : []), 
-    ...publicRoutes(),
-  ]);
-
   return <RouterProvider router={router} />;
 }
 
