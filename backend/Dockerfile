@@ -38,6 +38,7 @@ RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install mbstring \
     && docker-php-ext-install xml
 
+# Instalando a biblioteca GD do PHP
 RUN docker-php-ext-configure gd \
             --prefix=/usr \
             --with-jpeg \
@@ -52,6 +53,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && composer self-update 2.6.6
 
 # Diretório de trabalho e cópia do código-fonte
+RUN mkdir /app
 WORKDIR /app
 COPY . .
 
